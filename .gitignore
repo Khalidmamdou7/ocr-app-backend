@@ -1,0 +1,12 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Folders created by editors
+.vscode/
+.idea/
+
+# For virtualenv or pyenv
+myenv/
+
+# Environment variables
+.env
