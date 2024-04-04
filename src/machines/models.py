@@ -8,26 +8,24 @@ import re
 import bcrypt
 from ..auth.models import RoleEnum, User
 from datetime import datetime
+
 from ..utils.utils import validate_url
 
 
-class ProductionLineCreate(BaseModel):
+class MachineCreate(BaseModel):
+    pet_line_id: Annotated[str, Field(..., examples=["12132fasdas23r1f"])]
     name: Annotated[str, Field(max_length=100)]
-    photo_url: Optional[str] = None
 
-    @validator("photo_url")
-    def validate_photo_url(cls, v):
-        return validate_url(v)
 
-class ProductionLineUpdate(ProductionLineCreate):
+class MachineUpdate(MachineCreate):
     pass
 
-class ProductionLineInDB(ProductionLineCreate):
+class MachineInDB(MachineCreate):
     id: Optional[str] = Field(alias='_id', default=None)
     created_at: datetime
     updated_at: datetime
 
-class ProductionLine(ProductionLineCreate):
+class Machine(MachineCreate):
     id: Optional[str]
     created_at: datetime
     updated_at: datetime

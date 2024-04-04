@@ -10,7 +10,7 @@ from ..models import ResponseModel
 from ..auth.dependencies import authenticate_user_jwt, get_current_user
 from ..auth.models import RoleEnum, User
 
-from . import service as production_line_service
+from . import service as pet_line_service
 from .models import *
 
 
@@ -34,8 +34,11 @@ def create_pet_line(
     )
 
 @router.get("/", response_model=ResponseModel[list[PetLine]])
-def get_pet_lines():
-    pet_lines = pet_line_service.get_pet_lines()
+def get_pet_lines(production_line_id: str | None = None):
+    if production_line_id:
+        pet_lines = pet_line_service.get_pet_lines_by_production_line_id(production_line_id)
+    else:
+        pet_lines = pet_line_service.get_pet_lines()
 
     return ResponseModel(
         data=pet_lines,
