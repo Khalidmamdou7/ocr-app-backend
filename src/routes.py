@@ -6,6 +6,7 @@ from .production_lines.router import router as production_lines_router
 from .pet_lines.router import router as pet_lines_router
 from .machines.router import router as machines_router
 from .counters.router import router as counters_router
+from .data_gathering.router import router as data_gathering_router
 
 routes = APIRouter()
 
@@ -14,3 +15,4 @@ routes.include_router(production_lines_router, prefix="/production-lines", tags=
 routes.include_router(pet_lines_router, prefix="/pet-lines", tags=["pet_lines"])
 routes.include_router(machines_router, prefix="/machines", tags=["machines"])
 routes.include_router(counters_router, prefix="/counters", tags=["counters"])
+routes.include_router(data_gathering_router, prefix="/data-gathering", tags=["data_gathering"])

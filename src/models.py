@@ -4,6 +4,8 @@ from typing import Generic, TypeVar, Annotated
 from enum import Enum
 
 from pydantic import BaseModel, Field
+from fastapi import UploadFile, File, Response
+from fastapi.responses import FileResponse
 
 # Generic type for any object
 T = TypeVar("T")
