@@ -31,17 +31,15 @@ class User(BaseModel):
     email: EmailStr | None = "dummy_email@mail.com"
     full_name: Annotated[str, Field(..., min_length=3, max_length=50, examples=['John Doe'])] = "dummy_full_name"
     mobile: Annotated[str, Field(..., min_length=11, max_length=11, pattern=r'^01\d{9}$', examples=['01234567890'])] = "01234567890"
-    role: Annotated[RoleEnum, Field(..., examples=['team_member'])] = RoleEnum.TEAM_MEMBER
+    role: Annotated[RoleEnum, Field(..., examples=['Admin', 'Manager', 'Worker'])] = RoleEnum.WORKER
 
 class UserInDB(User):
     id: Optional[str] = Field(alias='_id', default=None)
     disabled: bool = True
     hashed_password: str
-    team: Optional[str] = None
 
 class UserResponse(User):
     id: Optional[str]
-    team: Optional[str] = None
 
 
 class UserCreateRequest(BaseModel):

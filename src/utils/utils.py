@@ -2,6 +2,7 @@ from typing import Any, Optional
 
 from bson import ObjectId
 from pydantic_core import core_schema
+import re
 
 class PyObjectId(str):
     @classmethod
@@ -53,3 +54,10 @@ def obj_to_dict(obj) -> dict:
         return dict
     else:
         raise Exception("Object not found")
+
+
+def validate_url(v):
+    if v:
+        if not re.match(r"^https?://", v):
+            raise ValueError("Invalid URL")
+    return v

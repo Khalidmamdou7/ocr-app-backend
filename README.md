@@ -56,7 +56,7 @@ It is a REST API built using the fastapi framework.
 1. Run the server. the --reload flag is optional and is used to reload the server when a change is made (during development)
 
     ```bash
-    uvicorn src.main:app --reload
+    uvicorn src.main:app --reload --port <port>
     ```
 
 

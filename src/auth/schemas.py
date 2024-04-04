@@ -53,7 +53,6 @@ class UsersDB():
         if user is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
         user = UserInDB(**db_to_dict(user))
-        user = self.get_user_team(user)
         return user
     
     def get_user_by_id(self, user_id: str):
