@@ -122,6 +122,23 @@ class AppSettings(BaseSettings):
         min_length=8,
     )
 
+    CLOUDINARY_CLOUD_NAME: str = Field(
+        title="Cloudinary cloud name",
+        description="Cloudinary cloud name",
+        type="string",
+    )
+
+    CLOUDINARY_API_KEY: str = Field(
+        title="Cloudinary API key",
+        description="Cloudinary API key",
+        type="string",
+    )
+
+    CLOUDINARY_API_SECRET: SecretStr = Field(
+        title="Cloudinary API secret",
+        description="Cloudinary API secret",
+    )
+
     
 
 

@@ -12,6 +12,8 @@ from .models import *
 from ..auth.schemas import UsersDB
 from ..auth.models import User, RoleEnum
 
+from .utils import upload_image_to_cloudinary
+
 import os
 
 ocr_models = []
@@ -97,6 +99,9 @@ async def upload_data(
             os.makedirs('data')
         with open(f'data/{data_file.filename}', 'wb') as f:
             f.write(data_file.file.read())
+            file_path = f'data/{data_file.filename}'
+        
+        uploaded_image_url = upload_image_to_cloudinary(file_path)
 
         model_id = None
         for model in ocr_models:
@@ -110,14 +115,13 @@ async def upload_data(
             ocr_model_id=str(model_id),
             flavor=flavor,
             size=size,
-            file_path=f'data/{data_file.filename}',
+            file_url=uploaded_image_url,
             collected_info_values=collected_info_values,
             uploader_username=current_user.username,
             created_at=datetime.now().isoformat(),
             updated_at=datetime.now().isoformat(),
         )
         data.append(data_obj)
-        print(data_obj.dict())
         return DataResponse(**data_obj.dict())
 
 def get_data_ids(counter_id: str | None, flavor: str | None, size: str | None, uploader_username: str | None, start_date: str | None, end_date: str | None) -> list[DataResponse]:
@@ -143,7 +147,6 @@ def get_data(data_id: str, file: bool = False) -> DataResponse:
         return DataResponse(**data_obj.dict(), file=file_content)
     return DataResponse(**data_obj.dict())
 
-
 def update_data(
         data_id: str,
         counter_id: str,
@@ -163,7 +166,9 @@ def update_data(
     if data_file:
         with open(f'data/{data_file.filename}', 'wb') as f:
             f.write(data_file.file.read())
-        data_obj.file_path = f'data/{data_file.filename}'
+            file_path = f'data/{data_file.filename}'
+        uploaded_image_url = upload_image_to_cloudinary(file_path)
+        data_obj.file_url = uploaded_image_url
     return DataResponse(**data_obj.dict())
 
 def delete_data(data_id: str):

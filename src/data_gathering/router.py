@@ -98,9 +98,9 @@ def delete_ocr_model(ocr_model_id: str):
 async def upload_data(
     data_file: Annotated[UploadFile, File(...)],
     counter_id: Annotated[int, Form(...)],
-    flavor: Annotated[str | None, Form(...)] = None,
-    size: Annotated[str | None, Form(...)] = None,
-    collected_info_values: Annotated[dict, Form(...)] = None,
+    flavor: Annotated[str, Form(...)],
+    size: Annotated[str, Form(...)],
+    collected_info_values: Annotated[dict | None, Form(...)] = None,
     current_user: User = Depends(get_current_user),
 ):
     data = await data_gathering_service.upload_data(data_file, counter_id, flavor, size, collected_info_values, current_user)

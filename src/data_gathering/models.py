@@ -41,9 +41,9 @@ class Data(BaseModel):
 
 class DataResponse(Data):
     id: str
-    file: Optional[bytes] = None
+    file_url: Optional[str] = None
 
 class DataInDB(Data):
     id: Optional[str] = Field(alias='_id', default=None)
-    file_path: str
+    file_url: Optional[str] = None
 
