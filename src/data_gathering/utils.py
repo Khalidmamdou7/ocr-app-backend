@@ -17,7 +17,7 @@ cloudinary.config(
 def upload_image_to_cloudinary(file_path: str):
     upload_result = cloudinary.uploader.upload(file_path)
     print("File uploaded to cloudinary successfully: ", upload_result["secure_url"])
-    delete_file(file_path)
+    # delete_file(file_path)
     return upload_result["secure_url"]
 
 def delete_file(file_path: str):

@@ -6,13 +6,14 @@
 
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, status, UploadFile, File
+from fastapi import Depends, HTTPException, status, UploadFile, File, BackgroundTasks
 
 from .models import *
 from ..auth.schemas import UsersDB
 from ..auth.models import User, RoleEnum
 
 from .utils import upload_image_to_cloudinary
+from ..utils.ocr_model import get_digits_from_image
 
 import os
 
@@ -92,6 +93,7 @@ async def upload_data(
         size: str,
         collected_info_values: object,
         current_user: User,
+        background_tasks: BackgroundTasks,
 ) -> DataResponse:
         
         # store the file in the server in a folder called 'data'
@@ -101,7 +103,10 @@ async def upload_data(
             f.write(data_file.file.read())
             file_path = f'data/{data_file.filename}'
         
-        uploaded_image_url = upload_image_to_cloudinary(file_path)
+        # TODO: Make upload_image_to_cloudinary a background task
+        # uploaded_image_url = upload_image_to_cloudinary(file_path)
+        results = get_digits_from_image(file_path)
+        print(results)
 
         model_id = None
         for model in ocr_models:
@@ -115,13 +120,15 @@ async def upload_data(
             ocr_model_id=str(model_id),
             flavor=flavor,
             size=size,
-            file_url=uploaded_image_url,
-            collected_info_values=collected_info_values,
+            file_url=None,
+            collected_info_values=results,
             uploader_username=current_user.username,
             created_at=datetime.now().isoformat(),
             updated_at=datetime.now().isoformat(),
         )
         data.append(data_obj)
+        background_tasks.add_task(upload_image_to_cloudinary, file_path)
+
         return DataResponse(**data_obj.dict())
 
 def get_data_ids(counter_id: str | None, flavor: str | None, size: str | None, uploader_username: str | None, start_date: str | None, end_date: str | None) -> list[DataResponse]:
