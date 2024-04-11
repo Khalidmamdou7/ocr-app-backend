@@ -38,6 +38,7 @@ It is a REST API built using the fastapi framework.
 
     ```bash
     pip install -r requirements.txt
+    pip install -r yolo-reqs.txt
     ```
 
     If you have added a new dependency, make sure to update the `requirements.txt` file by running the following command
