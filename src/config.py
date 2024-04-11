@@ -138,6 +138,18 @@ class AppSettings(BaseSettings):
         title="Cloudinary API secret",
         description="Cloudinary API secret",
     )
+    
+    GSHEET_CLIENT_SECRET_FILE_PATH: str = Field(
+        title="Google Sheet Client Secret file path",
+        description="Google Sheet Client Secret file path",
+        type="string",
+    )
+
+    GSHEET_TOKEN_FILE_PATH: str = Field(
+        title="Google Sheet token file path",
+        description="Google Sheet token file path",
+        type="string",
+    )
 
     
 

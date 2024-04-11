@@ -12,7 +12,7 @@ from .models import *
 from ..auth.schemas import UsersDB
 from ..auth.models import User, RoleEnum
 
-from .utils import upload_image_to_cloudinary
+from .utils import upload_image_to_cloudinary, write_data_entry_to_gsheet
 from ..utils.ocr_model import get_digits_from_image
 
 import os
@@ -127,8 +127,7 @@ async def upload_data(
             updated_at=datetime.now().isoformat(),
         )
         data.append(data_obj)
-        background_tasks.add_task(upload_image_to_cloudinary, file_path)
-
+        background_tasks.add_task(upload_image_and_write_data_to_gsheet, file_path, data_obj)
         return DataResponse(**data_obj.dict())
 
 def get_data_ids(counter_id: str | None, flavor: str | None, size: str | None, uploader_username: str | None, start_date: str | None, end_date: str | None) -> list[DataResponse]:
@@ -184,6 +183,12 @@ def delete_data(data_id: str):
     data.pop(data_id - 1)
 
 
-
+def upload_image_and_write_data_to_gsheet(
+        file_path: str,
+        data_entry_obj: DataInDB,
+):
+    uploaded_image_url = upload_image_to_cloudinary(file_path)
+    data_entry_obj.file_url = uploaded_image_url
+    write_data_entry_to_gsheet(data_entry_obj)
 
 
