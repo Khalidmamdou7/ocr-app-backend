@@ -13,7 +13,7 @@ from ..auth.schemas import UsersDB
 from ..auth.models import User, RoleEnum
 
 from .utils import upload_image_to_cloudinary, write_data_entry_to_gsheet
-from ..utils.ocr_model import get_digits_from_image
+# from ..utils.ocr_model import get_digits_from_image
 
 import os
 
@@ -105,8 +105,9 @@ async def upload_data(
         
         # TODO: Make upload_image_to_cloudinary a background task
         # uploaded_image_url = upload_image_to_cloudinary(file_path)
-        results = get_digits_from_image(file_path)
-        print(results)
+        # results = get_digits_from_image(file_path)
+        # print(results)
+        results = collected_info_values
 
         model_id = None
         for model in ocr_models:
