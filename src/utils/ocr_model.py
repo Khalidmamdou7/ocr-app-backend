@@ -5,7 +5,7 @@ import easyocr
 
 
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='ocr-models/best-values.pt', force_reload=False)
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='ocr-models/best-values.pt', force_reload=False, trust_repo=True)
 reader = easyocr.Reader(['en'])
 
 def get_digits_from_image(image_path):
