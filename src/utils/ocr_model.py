@@ -3,9 +3,20 @@ import cv2
 import numpy as np
 import easyocr
 
+import sys
+import os
+# model names are located in ocr-models folder
+model_names = os.listdir('ocr-models')
+print(model_names)
 
+models = dict()
+for model_name in model_names:
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path=f'ocr-models/{model_name}', force_reload=False, trust_repo=True)
+    models[model_name] = model
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='ocr-models/best-values.pt', force_reload=False, trust_repo=True)
+# for test purposes
+model = models[model_names[0]]
+
 reader = easyocr.Reader(['en'])
 
 def get_digits_from_image(image_path):
