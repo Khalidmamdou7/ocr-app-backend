@@ -21,16 +21,17 @@ router = APIRouter()
 
 @router.post("/ocr-models", response_model=ResponseModel[OcrModelResponse], status_code=status.HTTP_201_CREATED)
 async def upload_ocr_model(
+    background_tasks: BackgroundTasks,
     ocr_model_file: UploadFile = File(...),
     collected_info: list[str] = [],
     counter_id: str = None,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user)
 ):
     if current_user.role == RoleEnum.WORKER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     
     collected_info = collected_info[0].split(',') if collected_info[0] else []
-    ocr_model = await data_gathering_service.upload_ocr_model(ocr_model_file, counter_id, collected_info)
+    ocr_model = await data_gathering_service.upload_ocr_model(ocr_model_file, counter_id, collected_info, background_tasks)
 
     return ResponseModel(
         data=ocr_model,
@@ -98,7 +99,7 @@ def delete_ocr_model(ocr_model_id: str):
 async def upload_data(
     background_tasks: BackgroundTasks,
     data_file: Annotated[UploadFile, File(...)],
-    counter_id: Annotated[int, Form(...)],
+    counter_id: Annotated[str, Form(...)],
     flavor: Annotated[str, Form(...)],
     size: Annotated[str, Form(...)],
     collected_info_values: Annotated[dict | None, Form(...)] = None,

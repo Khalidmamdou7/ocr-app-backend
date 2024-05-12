@@ -14,7 +14,7 @@ counters = []
 def create_counter(counter: CounterCreate) -> Counter:
     # TODO: Call the DB to create a counter
     counter = CounterInDB(
-        id="1",
+        _id="1",
         name=counter.name,
         machine_id=counter.machine_id,
         created_at=datetime.now(),

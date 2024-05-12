@@ -42,7 +42,7 @@ async def upload_ocr_model(
 
     # create a model object
     ocr_model = OcrModelInDB(
-        _id=str(len(ocr_models) + 1),
+        _id=str(model_id),
         counter_id=counter_id,
         collected_info=collected_info,
         file_name=model_name,
@@ -113,6 +113,7 @@ async def upload_data(
         
         model_name = None
         for model in ocr_models:
+            print(model.counter_id, counter_id)
             if model.counter_id == counter_id:
                 model_name = model.file_name
                 break
