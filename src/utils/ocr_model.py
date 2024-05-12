@@ -19,6 +19,10 @@ model = models[model_names[0]]
 
 reader = easyocr.Reader(['en'])
 
+def add_model(model_file_name: str):
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path=f'ocr-models/{model_file_name}', force_reload=False, trust_repo=True)
+    models[model_file_name] = model
+
 def get_digits_from_image(image_path, model_name):
     img, labels, cord = model_predict(image_path, model_name)
     img, bounding_boxes = get_bounding_boxes(img, labels, cord)
@@ -41,9 +45,12 @@ def model_predict(image_path, model_name: str):
     return img, labels, cord
 
 def get_model(model_name: str):
+
     if model_name not in models:
         raise ValueError(f"OCR: OCR model {model_name} not found, available models: {model_names}")
     return models[model_name]
+
+
     
 
 

@@ -13,7 +13,7 @@ from ..auth.schemas import UsersDB
 from ..auth.models import User, RoleEnum
 
 from .utils import upload_image_to_cloudinary, write_data_entry_to_gsheet
-from ..utils.ocr_model import get_digits_from_image
+from ..utils.ocr_model import get_digits_from_image, add_model
 
 import os
 
@@ -24,6 +24,7 @@ async def upload_ocr_model(
         ocr_model_file: File,
         counter_id: str,
         collected_info: list[str],
+        background_tasks: BackgroundTasks,
 ) -> OcrModelResponse:
     print(type(ocr_model_file))
     model_id = len(ocr_models) + 1
@@ -34,6 +35,10 @@ async def upload_ocr_model(
         os.makedirs('ocr-models')
     with open(f'ocr-models/{model_name}', 'wb') as f:
         f.write(ocr_model_file.file.read())
+    
+    # background task to load the model
+    background_tasks.add_task(add_model, model_name)
+
 
     # create a model object
     ocr_model = OcrModelInDB(
