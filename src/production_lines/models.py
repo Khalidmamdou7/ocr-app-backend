@@ -24,8 +24,8 @@ class ProductionLineUpdate(ProductionLineCreate):
 
 class ProductionLineInDB(ProductionLineCreate):
     id: Optional[str] = Field(alias='_id', default=None)
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = datetime.now()
+    updated_at: datetime = datetime.now()
 
 class ProductionLine(ProductionLineCreate):
     id: Optional[str]
