@@ -14,8 +14,7 @@ for model_name in model_names:
     model = torch.hub.load('ultralytics/yolov5', 'custom', path=f'ocr-models/{model_name}', force_reload=False, trust_repo=True)
     models[model_name] = model
 
-# for test purposes
-model = models[model_names[0]]
+
 
 reader = easyocr.Reader(['en'])
 
@@ -31,6 +30,7 @@ def get_digits_from_image(image_path, model_name):
     for label, image in cropped_images.items():
         result, preprocessed_image = ocr_predict(image)
         results[label] = result
+    print(f"OCR: Predicted results: {results}")
     return results
 
 
@@ -40,6 +40,8 @@ def model_predict(image_path, model_name: str):
     img = cv2.imread(image_path)
     img = cv2.resize(img, (800, 800))
     results = model([img])
+    print(f"OCR: Predicted {len(results.xyxyn[0])} objects")
+    print(f"OCR: Predicted labels: {results.names}")
     results.print()
     labels, cord = results.xyxyn[0][:, -1], results.xyxyn[0][:, :-1]
     return img, labels, cord
@@ -48,6 +50,7 @@ def get_model(model_name: str):
 
     if model_name not in models:
         raise ValueError(f"OCR: OCR model {model_name} not found, available models: {model_names}")
+    print(f"OCR: Using model {model_name}")
     return models[model_name]
 
 
