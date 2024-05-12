@@ -19,8 +19,8 @@ model = models[model_names[0]]
 
 reader = easyocr.Reader(['en'])
 
-def get_digits_from_image(image_path):
-    img, labels, cord = model_predict(image_path)
+def get_digits_from_image(image_path, model_name):
+    img, labels, cord = model_predict(image_path, model_name)
     img, bounding_boxes = get_bounding_boxes(img, labels, cord)
     cropped_images = crop_image(img, bounding_boxes)
     results = dict()
@@ -29,13 +29,23 @@ def get_digits_from_image(image_path):
         results[label] = result
     return results
 
-def model_predict(image_path):
+
+
+def model_predict(image_path, model_name: str):
+    model = get_model(model_name)
     img = cv2.imread(image_path)
     img = cv2.resize(img, (800, 800))
     results = model([img])
     results.print()
     labels, cord = results.xyxyn[0][:, -1], results.xyxyn[0][:, :-1]
     return img, labels, cord
+
+def get_model(model_name: str):
+    if model_name not in models:
+        raise ValueError(f"OCR: OCR model {model_name} not found, available models: {model_names}")
+    return models[model_name]
+    
+
 
 def get_bounding_boxes(img, labels, cord):
 

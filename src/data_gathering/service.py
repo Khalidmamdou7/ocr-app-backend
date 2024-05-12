@@ -17,7 +17,7 @@ from ..utils.ocr_model import get_digits_from_image
 
 import os
 
-ocr_models = []
+ocr_models: list[OcrModelInDB] = []
 data = []
 
 async def upload_ocr_model(
@@ -26,11 +26,13 @@ async def upload_ocr_model(
         collected_info: list[str],
 ) -> OcrModelResponse:
     print(type(ocr_model_file))
+    model_id = len(ocr_models) + 1
+    model_name = f"model_{model_id}_counter_{counter_id}_{ocr_model_file.filename}"
     
     # store the file in the server in a folder called 'ocr-models'
     if not os.path.exists('ocr-models'):
         os.makedirs('ocr-models')
-    with open(f'ocr-models/{ocr_model_file.filename}', 'wb') as f:
+    with open(f'ocr-models/{model_name}', 'wb') as f:
         f.write(ocr_model_file.file.read())
 
     # create a model object
@@ -38,8 +40,8 @@ async def upload_ocr_model(
         _id=str(len(ocr_models) + 1),
         counter_id=counter_id,
         collected_info=collected_info,
-        file_name=ocr_model_file.filename,
-        file_path=f'ocr-models/{ocr_model_file.filename}',
+        file_name=model_name,
+        file_path=f'ocr-models/{model_name}',
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
@@ -103,22 +105,20 @@ async def upload_data(
             f.write(data_file.file.read())
             file_path = f'data/{data_file.filename}'
         
-        # TODO: Make upload_image_to_cloudinary a background task
-        # uploaded_image_url = upload_image_to_cloudinary(file_path)
-        results = get_digits_from_image(file_path)
-        print(results)
-        # results = collected_info_values
-
-        model_id = None
+        
+        model_name = None
         for model in ocr_models:
             if model.counter_id == counter_id:
-                model_id = model.id
+                model_name = model.file_name
                 break
+        results = get_digits_from_image(file_path, model_name)
+        print(results)
+
         # create a data object
         data_obj = DataInDB(
             _id=str(len(data) + 1),
             counter_id=str(counter_id),
-            ocr_model_id=str(model_id),
+            ocr_model_id=str(model_name),
             flavor=flavor,
             size=size,
             file_url=None,

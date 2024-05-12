@@ -87,7 +87,8 @@ def write_gsheet_data(gsheet_id: str, sheet_name: str, first_column: str, last_c
         print(f"An error occurred while writing data to Google Sheet: {e}")
         raise e
     else:
-        print(f"{result.get('updatedCells')} cells updated.")
+        print(f"{result.get('updatedCells')} cells have been updated in the following sheet: {sheet_name}")
+        print(f"Url to the sheet: https://docs.google.com/spreadsheets/d/{gsheet_id}")
         return result
     finally:
         service.close()

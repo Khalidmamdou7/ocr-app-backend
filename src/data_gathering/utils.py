@@ -89,16 +89,7 @@ def write_data_entry_to_gsheet(data_entry_obj: DataInDB):
    sorted_values_list = [col_values_dict.get(i, None) for i in range(len(col_values_dict))]
    write_gsheet_data(gsheet_id, sheet_name, firstcolumn_letter, lastcolumn_letter, [sorted_values_list])
 
-   
 
-
-
-   # gsheet_id = "1oXF7eSnqyrFa6sigLoA4vE3Ndb1o9l3goESes5vvODo"
-   # range_name = "Output Data!A:Z"
-   # gsheet_data = get_gsheet_data(gsheet_id, range_name)
-   # print(gsheet_data)
-
-      
 
 def get_shift_from_timestamp(timestamp: datetime.datetime) -> str:
     if timestamp.hour < 12:
