@@ -47,7 +47,7 @@ def get_counters(machine_id: str = None):
     )
 
 @router.get("/{counter_id}", response_model=ResponseModel[Counter])
-def get_counter(counter_id: int):
+def get_counter(counter_id: str):
     counter = counter_service.get_counter(counter_id)
 
     return ResponseModel(
@@ -57,7 +57,7 @@ def get_counter(counter_id: int):
     )
 
 @router.put("/{counter_id}", response_model=ResponseModel[Counter])
-def update_counter(counter_id: int, counter: CounterUpdate):
+def update_counter(counter_id: str, counter: CounterUpdate):
     counter = counter_service.update_counter(counter_id, counter)
 
     return ResponseModel(
@@ -67,7 +67,7 @@ def update_counter(counter_id: int, counter: CounterUpdate):
     )
 
 @router.delete("/{counter_id}", response_model=ResponseModel[None])
-def delete_counter(counter_id: int):
+def delete_counter(counter_id: str):
     counter_service.delete_counter(counter_id)
 
     return ResponseModel(

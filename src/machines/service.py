@@ -27,6 +27,10 @@ def get_machine(machine_id: int) -> Machine:
     machine = MachinesDB().get_machine(machine_id)
     return Machine(**machine.dict())
 
+def get_machines() -> list[Machine]:
+    machines = MachinesDB().get_machines()
+    return [Machine(**machine.dict()) for machine in machines]
+
 def update_machine(machine_id: int, machine: MachineUpdate) -> Machine:
     machine_in_db = MachinesDB().update_machine(machine_id, MachineInDB(**machine.dict()))
     return Machine(**machine_in_db.dict())

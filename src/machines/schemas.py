@@ -65,6 +65,13 @@ class MachinesDB():
         except InvalidId as e:
             raise HTTPException(status_code=400, detail="Invalid machine id")
         
+    def get_machines(self) -> list[MachineInDB]:
+        """
+        Get all machines from the database.
+        """
+        machines = self.collection.find()
+        return [MachineInDB(**db_to_dict(machine)) for machine in machines]
+        
     def get_machines_by_pet_line_id(self, pet_line_id: str) -> list[MachineInDB]:
         """
         Get all machines from the database that belong to a specific pet line.
