@@ -47,7 +47,7 @@ def get_machines(pet_line_id: str | None = None):
     )
 
 @router.get("/{machine_id}", response_model=ResponseModel[Machine])
-def get_machine(machine_id: int):
+def get_machine(machine_id: str):
     machine = machine_service.get_machine(machine_id)
 
     return ResponseModel(
@@ -57,7 +57,7 @@ def get_machine(machine_id: int):
     )
 
 @router.put("/{machine_id}", response_model=ResponseModel[Machine])
-def update_machine(machine_id: int, machine: MachineUpdate):
+def update_machine(machine_id: str, machine: MachineUpdate):
     machine = machine_service.update_machine(machine_id, machine)
 
     return ResponseModel(
@@ -67,7 +67,7 @@ def update_machine(machine_id: int, machine: MachineUpdate):
     )
 
 @router.delete("/{machine_id}", response_model=ResponseModel[None])
-def delete_machine(machine_id: int):
+def delete_machine(machine_id: str):
     machine_service.delete_machine(machine_id)
 
     return ResponseModel(
