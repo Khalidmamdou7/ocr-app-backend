@@ -29,8 +29,8 @@ class PetLineUpdate(PetLineCreate):
 
 class PetLineInDB(PetLineCreate):
     id: Optional[str] = Field(alias='_id', default=None)
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = datetime.now()
+    updated_at: datetime = datetime.now()
 
 class PetLine(PetLineCreate):
     id: Optional[str]

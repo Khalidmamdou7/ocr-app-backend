@@ -44,7 +44,7 @@ def get_production_lines():
     )
 
 @router.get("/{production_line_id}", response_model=ResponseModel[ProductionLine])
-def get_production_line(production_line_id: int):
+def get_production_line(production_line_id: str):
     production_line = production_line_service.get_production_line(production_line_id)
 
     return ResponseModel(
@@ -54,7 +54,7 @@ def get_production_line(production_line_id: int):
     )
 
 @router.put("/{production_line_id}", response_model=ResponseModel[ProductionLine])
-def update_production_line(production_line_id: int, production_line: ProductionLineUpdate):
+def update_production_line(production_line_id: str, production_line: ProductionLineUpdate):
     production_line = production_line_service.update_production_line(production_line_id, production_line)
 
     return ResponseModel(
@@ -64,7 +64,7 @@ def update_production_line(production_line_id: int, production_line: ProductionL
     )
 
 @router.delete("/{production_line_id}", response_model=ResponseModel[None])
-def delete_production_line(production_line_id: int):
+def delete_production_line(production_line_id: str):
     production_line_service.delete_production_line(production_line_id)
 
     return ResponseModel(

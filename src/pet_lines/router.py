@@ -47,7 +47,7 @@ def get_pet_lines(production_line_id: str | None = None):
     )
 
 @router.get("/{pet_line_id}", response_model=ResponseModel[PetLine])
-def get_pet_line(pet_line_id: int):
+def get_pet_line(pet_line_id: str):
     pet_line = pet_line_service.get_pet_line(pet_line_id)
 
     return ResponseModel(
@@ -57,7 +57,7 @@ def get_pet_line(pet_line_id: int):
     )
 
 @router.put("/{pet_line_id}", response_model=ResponseModel[PetLine])
-def update_pet_line(pet_line_id: int, pet_line: PetLineUpdate):
+def update_pet_line(pet_line_id: str, pet_line: PetLineUpdate):
     pet_line = pet_line_service.update_pet_line(pet_line_id, pet_line)
 
     return ResponseModel(
@@ -67,7 +67,7 @@ def update_pet_line(pet_line_id: int, pet_line: PetLineUpdate):
     )
 
 @router.delete("/{pet_line_id}", response_model=ResponseModel[None])
-def delete_pet_line(pet_line_id: int):
+def delete_pet_line(pet_line_id: str):
     pet_line_service.delete_pet_line(pet_line_id)
 
     return ResponseModel(

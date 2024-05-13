@@ -24,15 +24,15 @@ def get_production_lines() -> list[ProductionLine]:
     production_lines = [ProductionLine(**production_line_in_db.model_dump()) for production_line_in_db in ProductionLinesDB().get_all_production_lines()]
     return production_lines
 
-def get_production_line(production_line_id: int) -> ProductionLine:
+def get_production_line(production_line_id: str) -> ProductionLine:
     production_line_in_db = ProductionLinesDB().get_production_line(production_line_id)
     return ProductionLine(**production_line_in_db.model_dump())
 
-def update_production_line(production_line_id: int, production_line: ProductionLineUpdate) -> ProductionLine:
+def update_production_line(production_line_id: str, production_line: ProductionLineUpdate) -> ProductionLine:
     
     production_line_in_db = ProductionLinesDB().update_production_line(production_line_id, production_line)
     return ProductionLine(**production_line_in_db.dict())
 
-def delete_production_line(production_line_id: int):
+def delete_production_line(production_line_id: str):
     ProductionLinesDB().delete_production_line(production_line_id)
     return None
