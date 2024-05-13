@@ -90,7 +90,7 @@ class CountersDB():
         
         """
         try:
-            counters = self.collection.find({"machine_id": ObjectId(machine_id)})
+            counters = self.collection.find({"machine_id": machine_id})
             return [CounterInDB(**db_to_dict(counter)) for counter in counters]
         except InvalidId as e:
             raise HTTPException(status_code=400, detail="Invalid machine id")

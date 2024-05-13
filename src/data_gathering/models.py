@@ -13,20 +13,27 @@ from fastapi import FastAPI, File, UploadFile
 from ..utils.utils import validate_url
 
 
-class OcrModel(BaseModel):
+class OcrModelCreate(BaseModel):
     counter_id: str
     file_name: str
     collected_info: list[str] = []
     created_at: datetime
     updated_at: datetime
 
-class OcrModelResponse(OcrModel):
-    id: str
-    file: Optional[bytes] = None
 
-class OcrModelInDB(OcrModel):
+class OcrModelInDB(OcrModelCreate):
     id: Optional[str] = Field(alias='_id', default=None)
-    file_path: str
+    file_path: str | None = None
+
+class OcrModelUpdate(OcrModelCreate):
+    file_path: str | None = None
+
+class OcrModel(OcrModelCreate):
+    id: Optional[str]
+    file_path: str | None = None
+
+class OcrModelResponse(OcrModel):
+    pass
 
 
 class Data(BaseModel):
@@ -46,4 +53,7 @@ class DataResponse(Data):
 class DataInDB(Data):
     id: Optional[str] = Field(alias='_id', default=None)
     file_url: Optional[str] = None
+
+class DataUpdate(Data):
+    pass
 

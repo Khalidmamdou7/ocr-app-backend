@@ -141,7 +141,7 @@ async def upload_data(
 #     )
 
 @router.get("/data/{data_id}", response_model=ResponseModel[DataResponse])
-def get_data(data_id: int):
+def get_data(data_id: str):
     data = data_gathering_service.get_data(data_id)
 
     return ResponseModel(
@@ -152,9 +152,9 @@ def get_data(data_id: int):
     
 @router.put("/data/{data_id}", response_model=ResponseModel[DataResponse])
 async def update_data(
-    data_id: int,
+    data_id: str,
     data: UploadFile = File(...),
-    counter_id: int = None,
+    counter_id: str = None,
     flavor: str = None,
     size: str = None,
     collected_info_values: object = None,
@@ -169,7 +169,7 @@ async def update_data(
     )
 
 @router.delete("/data/{data_id}", response_model=ResponseModel[None])
-def delete_data(data_id: int):
+def delete_data(data_id: str):
     data_gathering_service.delete_data(data_id)
 
     return ResponseModel(

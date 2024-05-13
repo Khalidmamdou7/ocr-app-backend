@@ -22,6 +22,17 @@ def add_model(model_file_name: str):
     model = torch.hub.load('ultralytics/yolov5', 'custom', path=f'ocr-models/{model_file_name}', force_reload=False, trust_repo=True)
     models[model_file_name] = model
 
+def delete_model(model_file_name: str):
+    models.pop(model_file_name)
+    try:
+        os.remove(f'./ocr-models/{model_file_name}')
+    except OSError:
+        pass
+
+
+
+
+
 def get_digits_from_image(image_path, model_name):
     img, labels, cord = model_predict(image_path, model_name)
     img, bounding_boxes = get_bounding_boxes(img, labels, cord)
@@ -29,7 +40,7 @@ def get_digits_from_image(image_path, model_name):
     results = dict()
     for label, image in cropped_images.items():
         result, preprocessed_image = ocr_predict(image)
-        results[label] = result
+        results[label] = result[0]
     print(f"OCR: Predicted results: {results}")
     return results
 

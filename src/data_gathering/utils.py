@@ -57,19 +57,22 @@ def delete_file(file_path: str):
     print("File deleted successfully: ", file_path)
 
 def write_data_entry_to_gsheet(data_entry_obj: DataInDB):
-   gsheet_id = gsheet_strcuture["gsheet_id"]
-   counter_gsheet_strcuture = gsheet_strcuture["counters"][data_entry_obj.counter_id]
-   sheet_name = counter_gsheet_strcuture["sheet_name"]
-   firstcolumn_letter = counter_gsheet_strcuture["firstcolumn_letter"]
-   lastcolumn_letter = counter_gsheet_strcuture["lastcolumn_letter"]
+    gsheet_id = gsheet_strcuture["gsheet_id"]
+    # TODO: Use this after constructing the gsheet structure for each counter
+    # counter_gsheet_strcuture = gsheet_strcuture["counters"][data_entry_obj.counter_id]
+    counter_gsheet_strcuture = gsheet_strcuture["counters"][1]
+
+    sheet_name = counter_gsheet_strcuture["sheet_name"]
+    firstcolumn_letter = counter_gsheet_strcuture["firstcolumn_letter"]
+    lastcolumn_letter = counter_gsheet_strcuture["lastcolumn_letter"]
 
  
-   headers_columns = counter_gsheet_strcuture["headers_columns"]
-   date = data_entry_obj.created_at.date().isoformat()
-   shift = get_shift_from_timestamp(data_entry_obj.created_at)
-   # TODO: Change the default value of co
-   co = "Yes"
-   col_values_dict = {
+    headers_columns = counter_gsheet_strcuture["headers_columns"]
+    date = data_entry_obj.created_at.date().isoformat()
+    shift = get_shift_from_timestamp(data_entry_obj.created_at)
+    # TODO: Change the default value of co
+    co = "Yes"
+    col_values_dict = {
        counter_gsheet_strcuture["timestamp_column"]: data_entry_obj.created_at.isoformat(),
        counter_gsheet_strcuture["username_column"]: data_entry_obj.uploader_username,
        counter_gsheet_strcuture["img_link_column"]: data_entry_obj.file_url,
@@ -80,14 +83,14 @@ def write_data_entry_to_gsheet(data_entry_obj: DataInDB):
        counter_gsheet_strcuture["size_column"]: data_entry_obj.size
    }
 
-   for header, column in headers_columns.items():
+    for header, column in headers_columns.items():
        col_values_dict[column] = data_entry_obj.collected_info_values.get(header, 0)
    
-   # sort col_values_dict by column number
-   col_values_dict = dict(sorted(col_values_dict.items(), key=lambda item: item[0]))
-   # convert data to list sorted by column number starting from the smallest and if there is a missing column, it will be filled with None
-   sorted_values_list = [col_values_dict.get(i, None) for i in range(len(col_values_dict))]
-   write_gsheet_data(gsheet_id, sheet_name, firstcolumn_letter, lastcolumn_letter, [sorted_values_list])
+    # sort col_values_dict by column number
+    col_values_dict = dict(sorted(col_values_dict.items(), key=lambda item: item[0]))
+    # convert data to list sorted by column number starting from the smallest and if there is a missing column, it will be filled with None
+    sorted_values_list = [col_values_dict.get(i, None) for i in range(len(col_values_dict))]
+    write_gsheet_data(gsheet_id, sheet_name, firstcolumn_letter, lastcolumn_letter, [sorted_values_list])
 
 
 
