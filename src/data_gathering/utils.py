@@ -60,7 +60,7 @@ def write_data_entry_to_gsheet(data_entry_obj: DataInDB):
     gsheet_id = gsheet_strcuture["gsheet_id"]
     # TODO: Use this after constructing the gsheet structure for each counter
     # counter_gsheet_strcuture = gsheet_strcuture["counters"][data_entry_obj.counter_id]
-    counter_gsheet_strcuture = gsheet_strcuture["counters"][1]
+    counter_gsheet_strcuture = gsheet_strcuture["counters"]['1']
 
     sheet_name = counter_gsheet_strcuture["sheet_name"]
     firstcolumn_letter = counter_gsheet_strcuture["firstcolumn_letter"]
