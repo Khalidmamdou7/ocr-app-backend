@@ -34,10 +34,14 @@ def delete_model(model_file_name: str):
 
 
 def get_digits_from_image(image_path, model_name):
-    img, labels, cord = model_predict(image_path, model_name)
+    img, labels, cord, model_names = model_predict(image_path, model_name)
+    print(f"get_digits_from_image: Detected labels: {labels}")
+    print(f"get_digits_from_image: Detected model_names: {model_names}")
     img, bounding_boxes = get_bounding_boxes(img, labels, cord)
     cropped_images = crop_image(img, bounding_boxes)
     results = dict()
+    for model_name in model_names:
+        results[model_name] = None
     for label, image in cropped_images.items():
         result, preprocessed_image = ocr_predict(image)
         if len(result) == 0:
@@ -56,9 +60,12 @@ def model_predict(image_path, model_name: str):
     results = model([img])
     print(f"OCR: Predicted {len(results.xyxyn[0])} objects")
     print(f"OCR: Predicted labels: {results.names}")
+    # {0: 'Bottle Discharge', 1: 'Perform infeed', 2: 'Total rejected containers'}
+    # i want to get 'Bottle Discharge', 'Perform infeed', 'Total rejected containers' and store them in a list
+    model_names = results.names.values()
     results.print()
     labels, cord = results.xyxyn[0][:, -1], results.xyxyn[0][:, :-1]
-    return img, labels, cord
+    return img, labels, cord, model_names
 
 def get_model(model_name: str):
 
