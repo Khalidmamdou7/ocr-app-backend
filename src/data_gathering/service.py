@@ -124,7 +124,10 @@ async def upload_data(
         ocr_model = ocr_models[0]
         
         model_name = ocr_model.file_name
-        results = get_digits_from_image(file_path, model_name)
+        try:
+            results = get_digits_from_image(file_path, model_name)
+        except Exception as e:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
         print(results)
 
         

@@ -40,6 +40,9 @@ def get_digits_from_image(image_path, model_name):
     results = dict()
     for label, image in cropped_images.items():
         result, preprocessed_image = ocr_predict(image)
+        if len(result) == 0:
+            print(f"OCR: No text detected in {label}")
+            continue
         results[label] = result[0]
     print(f"OCR: Predicted results: {results}")
     return results
