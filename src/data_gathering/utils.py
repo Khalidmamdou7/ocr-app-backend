@@ -90,7 +90,7 @@ def write_data_entry_to_gsheet(data_entry_obj: DataInDB):
     col_values_dict = dict(sorted(col_values_dict.items(), key=lambda item: item[0]))
     # convert data to list sorted by column number starting from the smallest and if there is a missing column, it will be filled with None
     sorted_values_list = [col_values_dict.get(i, None) for i in range(len(col_values_dict))]
-    write_gsheet_data(gsheet_id, sheet_name, firstcolumn_letter, lastcolumn_letter, [sorted_values_list])
+    # write_gsheet_data(gsheet_id, sheet_name, firstcolumn_letter, lastcolumn_letter, [sorted_values_list])
 
 
 
