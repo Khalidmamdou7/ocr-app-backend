@@ -24,15 +24,15 @@ def get_pet_lines_by_production_line_id(production_line_id: str) -> list[PetLine
     pet_lines = [PetLine(**pet_line_in_db.model_dump()) for pet_line_in_db in PetLinesDB().get_pet_lines_by_production_line_id(production_line_id)]
     return pet_lines
 
-def get_pet_line(pet_line_id: int) -> PetLine:
+def get_pet_line(pet_line_id: str) -> PetLine:
     pet_line_in_db = PetLinesDB().get_pet_line(pet_line_id)
     return PetLine(**pet_line_in_db.model_dump())
 
-def update_pet_line(pet_line_id: int, pet_line: PetLineUpdate) -> PetLine:
+def update_pet_line(pet_line_id: str, pet_line: PetLineUpdate) -> PetLine:
     
     pet_line_in_db = PetLinesDB().update_pet_line(pet_line_id, pet_line)
     return PetLine(**pet_line_in_db.dict())
 
-def delete_pet_line(pet_line_id: int):
+def delete_pet_line(pet_line_id: str):
     PetLinesDB().delete_pet_line(pet_line_id)
     return None

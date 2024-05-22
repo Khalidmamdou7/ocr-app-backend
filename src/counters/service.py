@@ -25,14 +25,14 @@ def get_counters_by_machine_id(machine_id: str) -> list[Counter]:
     return [Counter(**counter.dict()) for counter in counters]
 
 
-def get_counter(counter_id: int) -> Counter:
+def get_counter(counter_id: str) -> Counter:
     counter = CountersDB().get_counter(counter_id)
     return Counter(**counter.dict())
 
 
-def update_counter(counter_id: int, counter: CounterUpdate) -> Counter:
-    counter = CountersDB().update_counter(counter_id, CounterInDB(**counter.dict()))
+def update_counter(counter_id: str, counter: CounterUpdate) -> Counter:
+    counter = CountersDB().update_counter(counter_id, counter)
     return Counter(**counter.dict())
 
-def delete_counter(counter_id: int):
+def delete_counter(counter_id: str):
     CountersDB().delete_counter(counter_id)
