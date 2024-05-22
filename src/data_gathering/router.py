@@ -51,7 +51,7 @@ def get_ocr_models_ids(counter_id: str | None):
 
 @router.get("/ocr-models/{ocr_model_id}", response_model=ResponseModel[OcrModelResponse])
 async def get_model(ocr_model_id: str):
-    ocr_model = await data_gathering_service.get_ocr_model(ocr_model_id, False)
+    ocr_model = await data_gathering_service.get_ocr_model(ocr_model_id)
 
     return ResponseModel(
         data=ocr_model,
