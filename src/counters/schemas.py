@@ -118,7 +118,7 @@ class CountersDB():
             except InvalidId as e:
                 raise HTTPException(status_code=400, detail="Invalid machine id")
             self.collection.update_one({"_id": ObjectId(counter_id)}, {"$set": counter_in_db})
-            return CounterInDB(**db_to_dict(counter_in_db))
+            return CounterInDB(**db_to_dict(self.collection.find_one({"_id": ObjectId(counter_id)})))
         except InvalidId as e:
             raise HTTPException(status_code=400, detail="Invalid counter id")
         
