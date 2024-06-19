@@ -6,6 +6,8 @@ import easyocr
 import sys
 import os
 # model names are located in ocr-models folder
+if not os.path.exists('ocr-models'):
+    os.mkdir('ocr-models')
 model_names = os.listdir('ocr-models')
 print(model_names)
 
