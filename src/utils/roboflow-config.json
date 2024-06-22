@@ -1,0 +1,20 @@
+{
+    "counters_models": {
+        "664d56de06354b6946c1952a": {
+            "friendly_name": "Blow Molder Inspection - عداد فحص النفخ",
+            "api_key": "FtSxmenLzB06PmPnk5k4",
+            "project_id": "blowmolder-checkmat-ppusd",
+            "version": "2",
+            "confidence": "40",
+            "overlap": "30"
+        },
+        "664d571406354b6946c1952b": {
+            "friendly_name": "Filler Production Counter - عداد انتاج الفيلر",
+            "api_key": "jk4Hmu7880ElBCgzXzMN",
+            "project_id": "filler-counter",
+            "version": "1",
+            "confidence": "40",
+            "overlap": "30"
+        }
+    }
+}

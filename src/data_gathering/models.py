@@ -38,7 +38,7 @@ class OcrModelResponse(OcrModel):
 
 class Data(BaseModel):
     counter_id: str
-    ocr_model_id: str
+    ocr_model_id: str | None
     flavor: str
     size: str
     collected_info_values: object

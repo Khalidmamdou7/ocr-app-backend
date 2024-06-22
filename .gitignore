@@ -14,7 +14,9 @@ myenv/
 # Folders for static files
 ocr-models/
 data/
+*.jpg
 
 # Test files
 gsheet-test.py
 *.json
+!*config.json

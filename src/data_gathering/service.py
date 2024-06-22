@@ -13,7 +13,7 @@ from ..auth.schemas import UsersDB
 from ..auth.models import User, RoleEnum
 
 from .utils import upload_image_to_cloudinary, write_data_entry_to_gsheet
-from ..utils.ocr_model import get_digits_from_image, add_model, get_model, delete_model
+from ..utils.ocr_model import get_digits_from_image
 from datetime import datetime
 from .schemas import DataDB, OcrModelDB
 
@@ -48,7 +48,6 @@ async def upload_ocr_model(
         f.write(ocr_model_file.file.read())
     
     # background task to load the model
-    background_tasks.add_task(add_model, model_name)
 
     ocr_model.file_name = model_name
     ocr_model.file_path = f'ocr-models/{model_name}'
@@ -98,7 +97,6 @@ def update_ocr_model(
 
 def delete_ocr_model(model_id: str):
     model = OcrModelDB().delete_ocr_model(model_id)
-    delete_model(model.file_name)
     
 
 async def upload_data(
@@ -118,14 +116,9 @@ async def upload_data(
             f.write(data_file.file.read())
             file_path = f'data/{data_file.filename}'
         
-        ocr_models = OcrModelDB().get_ocr_models_by_counter_id(counter_id)
-        if len(ocr_models) == 0:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No OCR models found for this counter")
-        ocr_model = ocr_models[0]
         
-        model_name = ocr_model.file_name
         try:
-            results = get_digits_from_image(file_path, model_name)
+            results = get_digits_from_image(file_path, counter_id)
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
         print(results)
@@ -133,7 +126,7 @@ async def upload_data(
         
         data_obj = DataDB().add_data(DataInDB(
             counter_id=counter_id,
-            ocr_model_id=ocr_model.id,
+            ocr_model_id=None,
             flavor=flavor,
             size=size,
             collected_info_values=results,

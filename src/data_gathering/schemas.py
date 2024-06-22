@@ -155,10 +155,7 @@ class DataDB:
         """
         try:
             data_in_db = data.model_dump()
-            # Check if the ocr_model exists
-            ocr_model = self.db.get_collection('ocr_models').find_one({"_id": ObjectId(data_in_db['ocr_model_id'])})
-            if ocr_model is None:
-                raise HTTPException(status_code=400, detail="ocr_model not found")
+           
             # Check if the counter exists
             counter = self.db.get_collection('counters').find_one({"_id": ObjectId(data_in_db['counter_id'])})
             if counter is None:
@@ -171,8 +168,7 @@ class DataDB:
         except DuplicateKeyError as e:
             duplicate_key = list(e.details['keyPattern'].keys())[0]
             raise HTTPException(status_code=400, detail="Data already exists with the same " + duplicate_key)
-        except InvalidId as e:
-            raise HTTPException(status_code=400, detail="Invalid ocr_model id")
+        
         
         return DataResponse(**db_to_dict(data_in_db))
     
@@ -255,10 +251,6 @@ class DataDB:
         """
         try:
             data_in_db = data.model_dump()
-            # Check if the ocr_model exists
-            ocr_model = self.db.get_collection('ocr_models').find_one({"_id": ObjectId(data_in_db['ocr_model_id'])})
-            if ocr_model is None:
-                raise HTTPException(status_code=400, detail="ocr_model not found")
             # Check if the counter exists
             counter = self.db.get_collection('counters').find_one({"_id": ObjectId(data_in_db['counter_id'])})
             if counter is None:
